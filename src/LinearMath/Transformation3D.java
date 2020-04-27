@@ -20,14 +20,15 @@ public class Transformation3D {
         sin = Math.sin(radians);
         switch (axis) {
             case 'z':
-                double[][] arrayZ = {{cos, sin, 0, 0}, {-sin, cos, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+                double[][] arrayZ = {{cos, -sin, 0, 0}, {sin, cos, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayZ, arrayZ.length);
                 break;
             case 'x':
-                double[][] arrayX = {{1, 0, 0, 0}, {0, cos, sin, 0}, {0, -sin, cos, 0}, {0, 0, 0, 1}};
+                double[][] arrayX = {{1, 0, 0, 0}, {0, cos, -sin, 0}, {0, sin, cos, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayX, arrayX.length);
+                break;
             case 'y':
-                double[][] arrayY = {{cos, 0, sin, 0}, {0, 1, 0, 0}, {-sin, 0, cos, 0}, {0, 0, 0, 1}};
+                double[][] arrayY = {{cos, 0, -sin, 0}, {0, 1, 0, 0}, {sin, 0, cos, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayY, arrayY.length);
         }
         return matrix;

@@ -41,11 +41,11 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     }
 
     public void InitializeMatrices() {
-        this.AT = new Matrix(3);
+        this.AT = new Matrix(4);
         AT.toIdentityMatrix();
-        this.CT = new Matrix(3);
+        this.CT = new Matrix(4);
         CT.toIdentityMatrix();
-        this.TT = new Matrix(3);
+        this.TT = new Matrix(4);
         TT.toIdentityMatrix();
         createVM3D();
     }
@@ -83,7 +83,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         viewWidth = dim.width;
     }
     public void paint(Graphics g) {
-        drawBackground(g);
+        //drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
         this.TT = CT.Multiply(AT.Multiply(VM));
         if(firstPaint) {
@@ -117,6 +117,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
                              {0,0,0,1}};
         Matrix R = new Matrix(arrayR,arrayR.length);
         Matrix T = transformation.translate(-(P.getVec()[0]),-(P.getVec()[1]),-(P.getVec()[2]));
+        //VM1
         this.VM = R.Multiply(T);
 
     }
