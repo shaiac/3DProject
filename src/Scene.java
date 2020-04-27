@@ -57,9 +57,7 @@ public class Scene {
             }
             lineNumber++;
         }
-        //createEdgesList(pointsIndex);
     }
-
     public List<Edge> getEdgesList() {
         return edgesList;
     }
@@ -67,15 +65,6 @@ public class Scene {
     public List<Vector> getVertexList() {
         return vertexList;
     }
-    /*public void createEdgesList(List<Pair<Integer,Integer>> pointsIndex) {
-        ListIterator<Pair<Integer,Integer>> iterator = pointsIndex.listIterator();
-        while (iterator.hasNext()) {
-            Pair<Integer, Integer> pair = iterator.next();
-            Edge edge = new Edge(this.vertexList.get(pair.getKey()),
-                    this.vertexList.get(pair.getValue()));
-            this.edgesList.add(edge);
-        }
-    }*/
 }
 
 
