@@ -32,7 +32,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.viewWidth = width;
         firstPaint = true;
         clipingFlag = false;
-        this.axis = 'x';
+        this.axis = 'z';
         InitializeMatrices();
         createClipping();
         addMouseListener(this);
