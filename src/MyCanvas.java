@@ -47,6 +47,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.TT = new Matrix(3);
         TT.toIdentityMatrix();
+        createVM();
     }
 
     public void createClipping() {
@@ -84,7 +85,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void paint(Graphics g) {
         drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
-        worldView();
+        this.TT = CT.Multiply(AT.Multiply(VM));
         if(firstPaint) {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM));
             firstPaint = false;
@@ -100,15 +101,14 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         g.drawString("R - Resets To Original Position.", 20, 40);
         g.drawString("Q - Quit.", 20, 60);
     }
-
-    public void worldView() {
-        /**Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
+    // change to 3D
+    public void createVM(){
+        Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
         Matrix rotate = transformation.rotate(-this.view.getDirection());
         Matrix scale = transformation.scale(this.viewWidth/view.getSize()[0], -this.viewHeight/view.getSize()[1]);
         Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
                 (double) this.viewHeight / 2 + 20);
         this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
-        this.TT = CT.Multiply(AT.Multiply(VM));*/
     }
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
@@ -209,12 +209,12 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
 
                 double SF = destination.minus(center).GetLength() /
                         pressedPoint.minus(center).GetLength();
-                Matrix scale = transformation.scale(SF, SF);
+                Matrix scale = transformation.scale(SF, SF, SF);
                 CT = transCenter.Multiply(scale).Multiply(transBack);
             } else {
                 double angle1 = destination.minus(center).GetAngle();
                 double angle2 = pressedPoint.minus(center).GetAngle();
-                Matrix rotate = transformation.rotate(-(angle1-angle2));
+                Matrix rotate = transformation.rotate(-(angle1-angle2),this.axis);
                 CT = transCenter.Multiply(rotate).Multiply(transBack);
             }
         }

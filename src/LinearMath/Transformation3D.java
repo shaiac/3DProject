@@ -11,7 +11,7 @@ public class Transformation3D {
         Matrix matrix = new Matrix(array, array.length);
         return matrix;
     }
-    public Matrix rotate(double angle, String axis) {
+    public Matrix rotate(double angle, char axis) {
         double radians, cos, sin;
         Matrix matrix = new Matrix(4);
         double[][] array;
@@ -19,14 +19,14 @@ public class Transformation3D {
         cos = Math.cos(radians);
         sin = Math.sin(radians);
         switch (axis) {
-            case "z":
+            case 'z':
                 double[][] arrayZ = {{cos, sin, 0, 0}, {-sin, cos, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayZ, arrayZ.length);
                 break;
-            case "x":
+            case 'x':
                 double[][] arrayX = {{1, 0, 0, 0}, {0, cos, sin, 0}, {0, -sin, cos, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayX, arrayX.length);
-            case "y":
+            case 'y':
                 double[][] arrayY = {{cos, 0, sin, 0}, {0, 1, 0, 0}, {-sin, 0, cos, 0}, {0, 0, 0, 1}};
                 matrix = new Matrix(arrayY, arrayY.length);
         }
