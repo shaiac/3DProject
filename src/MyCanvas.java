@@ -220,8 +220,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             double arr[] = {viewWidth/2,viewHeight/2,1};
             Vector center = new Vector(arr, 3);
-            Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2);
-            Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2);
+            Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2, 0);
+            Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2, 0);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
 
             if (transType.equals(("Scale"))) {

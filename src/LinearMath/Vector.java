@@ -48,8 +48,8 @@ public class Vector {
         return length;
     }
     public double GetAngle(Vector v){
-        double CrossPro = this.Multiply(v);
-        double cosAngle = CrossPro/(this.GetLength()*v.GetLength());
+        double dotProduct = this.Multiply(v);
+        double cosAngle = dotProduct/(this.GetLength()*v.GetLength());
         double angle = Math.toDegrees(Math.acos(cosAngle));
         return angle;
     }
@@ -100,6 +100,16 @@ public class Vector {
             vecArr[i] = this.vec[i] - v.getVec()[i];
         }
         Vector newVec = new Vector(vecArr, size);
+        return newVec;
+    }
+
+    public Vector crossPruduct(Vector v) {
+        double[] vecArr = new double[size];
+        Vector newVec = new Vector(vecArr,size);
+        vecArr[0] = this.getVec()[1] * v.getVec()[2] - this.getVec()[2] * v.getVec()[1];
+        vecArr[1] = this.getVec()[2] * v.getVec()[0] - this.getVec()[0] * v.getVec()[2];
+        vecArr[2] = this.getVec()[0] * v.getVec()[1] - this.getVec()[1] * v.getVec()[0];
+        vecArr[3] = 1;
         return newVec;
     }
 }
