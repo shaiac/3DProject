@@ -13,8 +13,8 @@ public class Display {
     public Display(String title) throws Exception {
         this.title = title;
         this.view = new View();
-        this.width = view.getResolution()[0];
-        this.height = view.getResolution()[1];
+        this.width = view.getViewPort()[0];
+        this.height = view.getViewPort()[1];
         createDisplay();
     }
 

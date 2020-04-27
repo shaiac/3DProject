@@ -18,6 +18,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Transformation3D transformation;
     private String transType;
     private Vector pressedPoint;
+    private char axis;
     private Matrix VM;
     private Matrix AT;
     private Matrix CT;
@@ -31,6 +32,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.viewWidth = width;
         firstPaint = true;
         clipingFlag = false;
+        this.axis = 'x';
         InitializeMatrices();
         createClipping();
         addMouseListener(this);
@@ -100,13 +102,13 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     }
 
     public void worldView() {
-        Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
+        /**Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
         Matrix rotate = transformation.rotate(-this.view.getDirection());
         Matrix scale = transformation.scale(this.viewWidth/view.getSize()[0], -this.viewHeight/view.getSize()[1]);
         Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
                 (double) this.viewHeight / 2 + 20);
         this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
-        this.TT = CT.Multiply(AT.Multiply(VM));
+        this.TT = CT.Multiply(AT.Multiply(VM));*/
     }
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
@@ -249,6 +251,12 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             InitializeMatrices();
         } else if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
             System.exit(0);
+        } else if (e.getKeyChar() == 'x' || e.getKeyChar() == 'X') {
+            this.axis = 'x';
+        } else if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
+            this.axis = 'y';
+        } else if (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z') {
+            this.axis = 'z';
         }
         this.repaint();
     }

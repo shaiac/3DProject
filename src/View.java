@@ -1,58 +1,70 @@
 import LinearMath.Vector;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
 public class View {
-    private Vector origin;
-    private double direction;
-    private double[] size;
-    private int[] resolution;
-    public View() throws Exception {
-        this.size = new double[2];
-        this.resolution = new int[2];
-        this.getValuesFromFile("Resources\\ex0.vim");
+    private Vector position;
+    private Vector lookAt;
+    private Vector up;
+    private double[] window;
+    private int[] viewPort;
 
+    public View() throws Exception {
+        this.viewPort = new int[2];
+        this.window = new double[4];
+        this.getValuesFromFile("Resources\\ex0.vim");
     }
-    public void getValuesFromFile(String filePath) throws Exception {
+
+    private Vector createPoint(String[] str) {
+        int strSize = str.length;
+        double[] arrPoint = new double[strSize - 1];
+        for (int j = 0; j < strSize - 1; j++) {
+            arrPoint[j] = Double.parseDouble(str[j + 1]);
+        }
+        return new Vector(arrPoint, strSize - 1);
+    }
+
+    private void getValuesFromFile(String filePath) throws Exception {
         File file = new File(filePath);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         while ((line = br.readLine()) != null) {
             String[] str = line.split(" ");
-            if (str[0].compareTo("Origin") == 0) {
-                int strSize = str.length;
-                double[] arrPoint = new double[strSize - 1];
-                for (int j = 0;j<strSize - 1;j++) {
-                    arrPoint[j] = Double.parseDouble(str[j + 1]);
+            if (str[0].compareTo("Position") == 0) {
+                this.position = createPoint(str);
+            } else if (str[0].compareTo("LookAt") == 0) {
+                this.lookAt = createPoint(str);
+            } else if (str[0].compareTo("Up") == 0) {
+                this.up = createPoint(str);
+            } else if (str[0].compareTo("Window") == 0) {
+                for (int i = 0; i < 4; i++) {
+                    this.window[i] = Double.parseDouble((str[i + 1]));
                 }
-                this.origin = new Vector(arrPoint,strSize - 1);
-            } else  if (str[0].compareTo("Direction") == 0) {
-                this.direction = Double.parseDouble(str[1]);
-            } else if (str[0].compareTo("Size") == 0) {
-                this.size[0] = Double.parseDouble(str[1]);
-                this.size[1] = Double.parseDouble(str[2]);
-            } else if (str[0].compareTo("Resolution") == 0) {
-                this.resolution[0] = Integer.parseInt((str[1]));
-                this.resolution[1] = Integer.parseInt((str[2]));
+            } else if (str[0].compareTo("Viewport") == 0) {
+                this.viewPort[0] = Integer.parseInt((str[1]));
+                this.viewPort[1] = Integer.parseInt((str[2]));
             }
         }
     }
 
-    public double getDirection() {
-        return direction;
+    public Vector getPosition() {
+        return position;
     }
 
-    public double[] getSize() {
-        return size;
+    public Vector getLookAt() {
+        return lookAt;
     }
 
-    public int[] getResolution() {
-        return resolution;
+    public Vector getUp() {
+        return up;
     }
 
-    public Vector getOrigin() {
-        return origin;
+    public double[] getWindow() {
+        return window;
+    }
+
+    public int[] getViewPort() {
+        return viewPort;
     }
 }
