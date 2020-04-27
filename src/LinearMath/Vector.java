@@ -32,6 +32,15 @@ public class Vector {
         }
         return retval;
     }
+    public Vector Multiply(double scal){
+        Vector retval;
+        double[] vecArr = new double[size];
+        for(int i=0; i<size;i++){
+            vecArr[i] += this.vec[i] * scal;
+        }
+        retval = new Vector(vecArr,size);
+        return retval;
+    }
     public double GetLength(){
         double length;
         Vector v1 = this.DecreaseDimension();

@@ -47,7 +47,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.TT = new Matrix(3);
         TT.toIdentityMatrix();
-        createVM();
+        createVM3D();
     }
 
     public void createClipping() {
@@ -102,14 +102,33 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         g.drawString("Q - Quit.", 20, 60);
     }
     // change to 3D
-    public void createVM(){
+    public void createVM3D(){
+        Vector L =  view.getLookAt().AddDimension();
+        Vector P= view.getPosition().AddDimension();
+        Vector V = view.getUp().AddDimension();
+        Vector Zv = P.minus(L);
+        Zv = Zv.Multiply(1/Zv.GetLength());
+        Vector Xv = V.crossPruduct(Zv);
+        Xv = Xv.Multiply(1/Xv.GetLength());
+        Vector Yv = Xv.crossPruduct(Zv);
+        double[][] arrayR = {{Xv.getVec()[0],Xv.getVec()[1],Xv.getVec()[2], 0},
+                             {Yv.getVec()[0],Yv.getVec()[1],Yv.getVec()[2], 0},
+                             {Zv.getVec()[0],Zv.getVec()[1],Zv.getVec()[2], 0},
+                             {0,0,0,1}};
+        Matrix R = new Matrix(arrayR,arrayR.length);
+        Matrix T = transformation.translate(-(P.getVec()[0]),-(P.getVec()[1]),-(P.getVec()[2]));
+        this.VM = R.Multiply(T);
+
+    }
+    /*
+    public void createVM2D(){
         Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
         Matrix rotate = transformation.rotate(-this.view.getDirection());
         Matrix scale = transformation.scale(this.viewWidth/view.getSize()[0], -this.viewHeight/view.getSize()[1]);
         Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
                 (double) this.viewHeight / 2 + 20);
         this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
-    }
+    }*/
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
         Graphics g = getGraphics();
@@ -191,11 +210,11 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.repaint();
     }
-
+    //change to 3D
     public void mouseDragged(MouseEvent e) {
         if (transType.equals("Translate")) {
             CT = transformation.translate(e.getX() - pressedPoint.getVec()[0],
-                    e.getY() - pressedPoint.getVec()[1]);
+                    e.getY() - pressedPoint.getVec()[1], 0);
 
 
         } else {
