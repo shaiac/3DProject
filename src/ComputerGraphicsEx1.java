@@ -4,6 +4,6 @@ public class ComputerGraphicsEx1 {
         //Scene sc = new Scene();
         //View view = new View();
         //MyFrame myFrame = new MyFrame("ComputerGraphicsEx0");
-        Display display = new Display("ComputerGraphicsEx0");
+        Display display = new Display("ComputerGraphicsEx1");
     }
 }

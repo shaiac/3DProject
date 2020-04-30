@@ -41,6 +41,11 @@ public class Vector {
         retval = new Vector(vecArr,size);
         return retval;
     }
+    public Vector normal(){
+        Vector retval;
+        retval = this.Multiply(1/this.GetLength());
+        return retval;
+    }
     public double GetLength(){
         double length;
         Vector v1 = this.DecreaseDimension();

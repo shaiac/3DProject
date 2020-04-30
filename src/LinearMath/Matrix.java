@@ -70,5 +70,17 @@ public class Matrix {
             }
         }
     }
+    //create A^t matrix
+    public Matrix transform(){
+        Matrix ans;
+        double[][] ans2Arr = new double[size][size];
+        for(int i=0;i<size;i++){
+            for(int j=0; j<size;j++){
+                ans2Arr[j][i] = this.mat[i][j];
+            }
+        }
+        ans = new Matrix(ans2Arr,size);
+        return ans;
+    }
 
 }

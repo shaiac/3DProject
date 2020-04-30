@@ -20,6 +20,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Vector pressedPoint;
     private char axis;
     private Matrix VM;
+    private Matrix VM2;
     private Matrix AT;
     private Matrix CT;
     private Matrix TT;
@@ -107,9 +108,9 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Vector P= view.getPosition().AddDimension();
         Vector V = view.getUp().AddDimension();
         Vector Zv = P.minus(L);
-        Zv = Zv.Multiply(1/Zv.GetLength());
+        Zv = Zv.normal();
         Vector Xv = V.crossPruduct(Zv);
-        Xv = Xv.Multiply(1/Xv.GetLength());
+        Xv = Xv.normal();
         Vector Yv = Xv.crossPruduct(Zv);
         double[][] arrayR = {{Xv.getVec()[0],Xv.getVec()[1],Xv.getVec()[2], 0},
                              {Yv.getVec()[0],Yv.getVec()[1],Yv.getVec()[2], 0},
@@ -119,6 +120,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Matrix T = transformation.translate(-(P.getVec()[0]),-(P.getVec()[1]),-(P.getVec()[2]));
         //VM1
         this.VM = R.Multiply(T);
+        //
+        //this.VM2 = this.VM.transform();
 
     }
     /*
@@ -221,6 +224,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             double arr[] = {viewWidth/2,viewHeight/2,1};
             Vector center = new Vector(arr, 3);
+            Matrix transLookat = transformation.translate(0,0,view.getLookAt().getVec()[2]);
+            Matrix transLookatBack = transformation.translate(0,0,-view.getLookAt().getVec()[2]);
             Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2, 0);
             Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2, 0);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
@@ -238,7 +243,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
                 CT = transCenter.Multiply(rotate).Multiply(transBack);
             }
         }
-        TT = CT.Multiply(AT).Multiply(VM);
+        TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM)));
         this.repaint();
     }
 
