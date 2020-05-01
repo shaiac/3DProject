@@ -211,7 +211,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             double arr[] = {viewWidth/2,viewHeight/2,1};
             Vector center = new Vector(arr, 3);
             Matrix transLookat = transformation.translate(0,0,view.getPosition().getVec()[2] - view.getLookAt().getVec()[2]);
-            Matrix transLookatBack = transformation.translate(0,0,-view.getPosition().getVec()[2] - view.getLookAt().getVec()[2]);
+            Matrix transLookatBack = transformation.translate(0,0,-(view.getPosition().getVec()[2] - view.getLookAt().getVec()[2]));
             Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2, 0);
             Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2, 0);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
