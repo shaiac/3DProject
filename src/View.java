@@ -1,3 +1,5 @@
+import LinearMath.Matrix;
+import LinearMath.Transformation3D;
 import LinearMath.Vector;
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,11 +11,16 @@ public class View {
     private Vector up;
     private double[] window;
     private int[] viewPort;
+    private Transformation3D transformation;
+    private Matrix VM1;
+    private Matrix VM2;
 
     public View() throws Exception {
         this.viewPort = new int[2];
         this.window = new double[4];
+        this.transformation = new Transformation3D();
         this.getValuesFromFile("Resources\\ex0.vim");
+        createVM1();
     }
 
     private Vector createPoint(String[] str) {
@@ -48,18 +55,36 @@ public class View {
         }
     }
 
-    public Vector getPosition() {
-        return position;
+    private void createVM1() {
+        Vector L =  this.lookAt.AddDimension();
+        Vector P= this.position.AddDimension();
+        Vector V = this.up.AddDimension();
+        Vector Zv = P.minus(L);
+        Zv = Zv.normal();
+        Vector Xv = V.crossPruduct(Zv);
+        Xv = Xv.normal();
+        Vector Yv = Xv.crossPruduct(Zv);
+        double[][] arrayR = {{Xv.getVec()[0],Xv.getVec()[1],Xv.getVec()[2], 0},
+                {Yv.getVec()[0],Yv.getVec()[1],Yv.getVec()[2], 0},
+                {Zv.getVec()[0],Zv.getVec()[1],Zv.getVec()[2], 0},
+                {0,0,0,1}};
+        Matrix R = new Matrix(arrayR,arrayR.length);
+        Matrix T = transformation.translate(-(P.getVec()[0]),-(P.getVec()[1]),-(P.getVec()[2]));
+        //VM1
+        this.VM1 = R.Multiply(T);
+    }
+
+    public Matrix getVM1() {
+        return this.VM1;
     }
 
     public Vector getLookAt() {
         return lookAt;
     }
 
-    public Vector getUp() {
-        return up;
+    public Transformation3D getTransformation() {
+        return this.transformation;
     }
-
     public double[] getWindow() {
         return window;
     }
@@ -67,4 +92,6 @@ public class View {
     public int[] getViewPort() {
         return viewPort;
     }
+
+
 }

@@ -19,7 +19,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private String transType;
     private Vector pressedPoint;
     private char axis;
-    private Matrix VM;
+    private Matrix VM1;
     private Matrix VM2;
     private Matrix AT;
     private Matrix CT;
@@ -28,7 +28,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public MyCanvas(int width, int height, View view) {
         this.scene = new Scene();
         this.view = view;
-        this.transformation = new Transformation3D();
+        this.transformation = view.getTransformation();
         this.viewHeight = height;
         this.viewWidth = width;
         firstPaint = true;
@@ -48,7 +48,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.TT = new Matrix(4);
         TT.toIdentityMatrix();
-        createVM3D();
+        this.VM1 = view.getVM1();
         this.VM2 = new Matrix(4);
         VM2.toIdentityMatrix();
     }
@@ -88,9 +88,9 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void paint(Graphics g) {
         //drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
-        this.TT = CT.Multiply(AT.Multiply(VM));
+        this.TT = CT.Multiply(AT.Multiply(VM1));
         if(firstPaint) {
-            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM));
+            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM1));
             firstPaint = false;
         } else {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
@@ -104,28 +104,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         g.drawString("R - Resets To Original Position.", 20, 40);
         g.drawString("Q - Quit.", 20, 60);
     }
-    // change to 3D
-    public void createVM3D(){
-        Vector L =  view.getLookAt().AddDimension();
-        Vector P= view.getPosition().AddDimension();
-        Vector V = view.getUp().AddDimension();
-        Vector Zv = P.minus(L);
-        Zv = Zv.normal();
-        Vector Xv = V.crossPruduct(Zv);
-        Xv = Xv.normal();
-        Vector Yv = Xv.crossPruduct(Zv);
-        double[][] arrayR = {{Xv.getVec()[0],Xv.getVec()[1],Xv.getVec()[2], 0},
-                             {Yv.getVec()[0],Yv.getVec()[1],Yv.getVec()[2], 0},
-                             {Zv.getVec()[0],Zv.getVec()[1],Zv.getVec()[2], 0},
-                             {0,0,0,1}};
-        Matrix R = new Matrix(arrayR,arrayR.length);
-        Matrix T = transformation.translate(-(P.getVec()[0]),-(P.getVec()[1]),-(P.getVec()[2]));
-        //VM1
-        this.VM = R.Multiply(T);
-        //
-        //this.VM2 = this.VM.transform();
 
-    }
     /*
     public void createVM2D(){
         Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
@@ -231,7 +210,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2, 0);
             Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2, 0);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
-
             if (transType.equals(("Scale"))) {
 
                 double SF = destination.minus(center).GetLength() /
@@ -245,7 +223,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
                 CT = transCenter.Multiply(rotate).Multiply(transBack);
             }
         }
-        TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM)));
+        TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM1)));
         this.repaint();
     }
 
