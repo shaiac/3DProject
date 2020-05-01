@@ -18,6 +18,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Transformation3D transformation;
     private String transType;
     private Vector pressedPoint;
+    private ChangeListener listener;
     private char axis;
     private Matrix VM1;
     private Matrix VM2;
@@ -78,6 +79,10 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Edge edge3 = new Edge(3,0);
         boundaryEdgesList.add(edge3);
         this.clipping = new Clipping(boundaryEdgesList, cVertexList);
+    }
+
+    public void setChangeListener(ChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -265,6 +270,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else if (e.getKeyChar() == 'l' || e.getKeyChar() == 'L') {
             this.scene = new Scene();
             this.view = new View();
+            this.listener.onChangeHappened(view);
             firstPaint = true;
             InitializeMatrices();
         }

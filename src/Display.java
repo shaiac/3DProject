@@ -3,14 +3,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 
-public class Display {
+public class Display implements ChangeListener{
     private MyFrame myFrame;
     private Canvas myCanvas;
     private View view;
     private String title;
     private int width, height;
 
-    public Display(String title) throws Exception {
+    public Display(String title) {
         this.title = title;
         this.view = new View();
         this.width = view.getViewPort()[0];
@@ -23,6 +23,7 @@ public class Display {
         myFrame.setVisible(true);
         myFrame.addClosingEvent();
         myCanvas = new MyCanvas(width,height, view);
+        ((MyCanvas) myCanvas).setChangeListener(this);
         myFrame.add(myCanvas);
         myFrame.setSize(width,height);
         //myFrame.pack();
@@ -35,7 +36,12 @@ public class Display {
         });
     }
 
-
+    public void onChangeHappened(View view) {
+        this.view = view;
+        this.width = view.getViewPort()[0];
+        this.height = view.getViewPort()[1];
+        createDisplay();
+    }
 
 
 }
