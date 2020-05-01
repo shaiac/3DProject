@@ -25,7 +25,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Matrix CT;
     private Matrix TT;
     private boolean firstPaint;
-    public MyCanvas(int width, int height, View view) throws Exception{
+    public MyCanvas(int width, int height, View view) {
         this.scene = new Scene();
         this.view = view;
         this.transformation = new Transformation3D();
@@ -49,6 +49,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.TT = new Matrix(4);
         TT.toIdentityMatrix();
         createVM3D();
+        this.VM2 = new Matrix(4);
+        VM2.toIdentityMatrix();
     }
 
     public void createClipping() {
@@ -282,6 +284,10 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             this.axis = 'y';
         } else if (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z') {
             this.axis = 'z';
+        } else if (e.getKeyChar() == 'l' || e.getKeyChar() == 'L') {
+            this.scene = new Scene();
+            firstPaint = true;
+            InitializeMatrices();
         }
         this.repaint();
     }
@@ -290,6 +296,4 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void keyReleased(KeyEvent e) {
 
     }
-
-
 }

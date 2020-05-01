@@ -18,7 +18,7 @@ public class Display {
         createDisplay();
     }
 
-    private void createDisplay() throws Exception {
+    private void createDisplay() {
         myFrame = new MyFrame(title);
         myFrame.setVisible(true);
         myFrame.addClosingEvent();
