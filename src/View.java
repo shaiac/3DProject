@@ -59,6 +59,9 @@ public class View {
         }
     }
 
+    private void createVM2() {
+
+    }
     private void createVM1() {
         Vector L =  this.lookAt.AddDimension();
         Vector P= this.position.AddDimension();
