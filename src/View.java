@@ -14,6 +14,8 @@ public class View {
     private Transformation3D transformation;
     private Matrix VM1;
     private Matrix VM2;
+    public double windowHieght;
+    public double windowWidth;
 
     public View() {
         this.viewPort = new int[2];
@@ -21,6 +23,7 @@ public class View {
         this.transformation = new Transformation3D();
         this.getValuesFromFile("Resources\\ex0.vim");
         createVM1();
+        createVM2();
     }
 
     private Vector createPoint(String[] str) {
@@ -60,8 +63,20 @@ public class View {
     }
 
     private void createVM2() {
-
+        this.windowHieght = window[3] - window[2];
+        this.windowWidth = window[1] - window[0];
+        double viewWidth = (double) this.viewPort[0];
+        double viewHeight = (double) this.viewPort[1];
+        Matrix scale = transformation.scale(viewWidth/this.windowWidth, viewHeight/this.windowHieght,0);
+        Matrix t2 = transformation.translate(viewWidth / 2 + 20, viewHeight / 2 + 20, 0);
+        this.VM2 = t2.Multiply(scale);
     }
+
+    public Matrix getVM2() {
+        return this.VM2;
+    }
+
+
     private void createVM1() {
         Vector L =  this.lookAt.AddDimension();
         Vector P= this.position.AddDimension();
@@ -87,6 +102,10 @@ public class View {
 
     public Vector getLookAt() {
         return lookAt;
+    }
+
+    public Vector getPosition() {
+        return position;
     }
 
     public Transformation3D getTransformation() {

@@ -50,8 +50,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.TT = new Matrix(4);
         TT.toIdentityMatrix();
         this.VM1 = view.getVM1();
-        this.VM2 = new Matrix(4);
-        VM2.toIdentityMatrix();
+        this.VM2 = view.getVM2();
     }
 
     public void createClipping() {
@@ -93,7 +92,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void paint(Graphics g) {
         //drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
-        this.TT = CT.Multiply(AT.Multiply(VM1));
+        //this.TT = CT.Multiply(AT.Multiply(VM1));
+        this.TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM1)));
         if(firstPaint) {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM1));
             firstPaint = false;
@@ -203,15 +203,15 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     //change to 3D
     public void mouseDragged(MouseEvent e) {
         if (transType.equals("Translate")) {
-            CT = transformation.translate(e.getX() - pressedPoint.getVec()[0],
-                    e.getY() - pressedPoint.getVec()[1], 0);
+            CT = transformation.translate((e.getX() - pressedPoint.getVec()[0])*this.view.windowWidth/this.viewWidth,
+                    (e.getY() - pressedPoint.getVec()[1])*this.view.windowHieght/this.viewHeight, 0);
 
 
         } else {
             double arr[] = {viewWidth/2,viewHeight/2,1};
             Vector center = new Vector(arr, 3);
-            Matrix transLookat = transformation.translate(0,0,view.getLookAt().getVec()[2]);
-            Matrix transLookatBack = transformation.translate(0,0,-view.getLookAt().getVec()[2]);
+            Matrix transLookat = transformation.translate(0,0,view.getPosition().getVec()[2] - view.getLookAt().getVec()[2]);
+            Matrix transLookatBack = transformation.translate(0,0,-view.getPosition().getVec()[2] - view.getLookAt().getVec()[2]);
             Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2, 0);
             Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2, 0);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
@@ -220,15 +220,16 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
                 double SF = destination.minus(center).GetLength() /
                         pressedPoint.minus(center).GetLength();
                 Matrix scale = transformation.scale(SF, SF, SF);
-                CT = transCenter.Multiply(scale).Multiply(transBack);
+                CT = transLookatBack.Multiply(scale).Multiply(transLookat);
             } else {
                 double angle1 = destination.minus(center).GetAngle();
                 double angle2 = pressedPoint.minus(center).GetAngle();
                 Matrix rotate = transformation.rotate(-(angle1-angle2),this.axis);
-                CT = transCenter.Multiply(rotate).Multiply(transBack);
+                CT = transLookatBack.Multiply(rotate).Multiply(transLookat);
+                //CT = rotate;
             }
         }
-        TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM1)));
+        //TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM1)));
         this.repaint();
     }
 
