@@ -264,6 +264,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             this.axis = 'z';
         } else if (e.getKeyChar() == 'l' || e.getKeyChar() == 'L') {
             this.scene = new Scene();
+            this.view = new View();
             firstPaint = true;
             InitializeMatrices();
         }

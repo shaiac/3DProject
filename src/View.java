@@ -15,7 +15,7 @@ public class View {
     private Matrix VM1;
     private Matrix VM2;
 
-    public View() throws Exception {
+    public View() {
         this.viewPort = new int[2];
         this.window = new double[4];
         this.transformation = new Transformation3D();
@@ -32,26 +32,30 @@ public class View {
         return new Vector(arrPoint, strSize - 1);
     }
 
-    private void getValuesFromFile(String filePath) throws Exception {
+    private void getValuesFromFile(String filePath) {
         File file = new File(filePath);
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] str = line.split(" ");
-            if (str[0].compareTo("Position") == 0) {
-                this.position = createPoint(str);
-            } else if (str[0].compareTo("LookAt") == 0) {
-                this.lookAt = createPoint(str);
-            } else if (str[0].compareTo("Up") == 0) {
-                this.up = createPoint(str);
-            } else if (str[0].compareTo("Window") == 0) {
-                for (int i = 0; i < 4; i++) {
-                    this.window[i] = Double.parseDouble((str[i + 1]));
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] str = line.split(" ");
+                if (str[0].compareTo("Position") == 0) {
+                    this.position = createPoint(str);
+                } else if (str[0].compareTo("LookAt") == 0) {
+                    this.lookAt = createPoint(str);
+                } else if (str[0].compareTo("Up") == 0) {
+                    this.up = createPoint(str);
+                } else if (str[0].compareTo("Window") == 0) {
+                    for (int i = 0; i < 4; i++) {
+                        this.window[i] = Double.parseDouble((str[i + 1]));
+                    }
+                } else if (str[0].compareTo("Viewport") == 0) {
+                    this.viewPort[0] = Integer.parseInt((str[1]));
+                    this.viewPort[1] = Integer.parseInt((str[2]));
                 }
-            } else if (str[0].compareTo("Viewport") == 0) {
-                this.viewPort[0] = Integer.parseInt((str[1]));
-                this.viewPort[1] = Integer.parseInt((str[2]));
             }
+        } catch (Exception e) {
+            System.out.println("Error reading from File");
         }
     }
 
