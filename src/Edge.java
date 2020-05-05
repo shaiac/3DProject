@@ -1,3 +1,8 @@
+/*
+submit:
+Ziv Zaarur 206099913
+Shai Acoca 315314278
+ */
 public class Edge {
     private int pointIndex0;
     private int pointIndex1;
