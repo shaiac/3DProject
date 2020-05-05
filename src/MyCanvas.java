@@ -93,6 +93,9 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         viewWidth = dim.width;
     }
     public void paint(Graphics g) {
+        g.setColor(Color.black);
+        g.fillRect(0,0,800,800);
+        //g.drawRect(0,0,800,800);
         //drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
         //this.TT = CT.Multiply(AT.Multiply(VM1));
@@ -129,7 +132,9 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Graphics g = getGraphics();
         int edgesNum = edges.size();
         int i;
+        g.setColor(Color.yellow);
         g.drawRect(20,20,viewWidth - 60,viewHeight - 80);
+        g.setColor(Color.green);
         for (i = 0; i < edgesNum; i++) {
             Vector ver0 = vertex.get(edges.get(i).getpointIndex0());
             Vector ver1 = vertex.get(edges.get(i).getpointIndex1());
