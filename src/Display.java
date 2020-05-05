@@ -36,7 +36,7 @@ public class Display implements ChangeListener{
             @Override
             public void componentResized(ComponentEvent e) {
                 Dimension dim = e.getComponent().getSize();
-                myCanvas.setSize(dim);
+                ((MyCanvas) myCanvas).changeSize(dim);
             }
         });
     }

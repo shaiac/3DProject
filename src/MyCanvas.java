@@ -31,14 +31,12 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Matrix CT;
     private Matrix TT;
     private Matrix Proj;
-    private boolean firstPaint;
     public MyCanvas(int width, int height, View view) {
         this.scene = new Scene();
         this.view = view;
         this.transformation = view.getTransformation();
         this.viewHeight = height;
         this.viewWidth = width;
-        firstPaint = true;
         clipingFlag = false;
         this.axis = 'z';
         InitializeMatrices();
@@ -92,27 +90,19 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.listener = listener;
     }
 
-    @Override
-    public void setSize (Dimension dim) {
+
+    public void changeSize (Dimension dim) {
+        this.setSize(dim);
         viewHeight = dim.height;
         viewWidth = dim.width;
+        createClipping();
     }
     public void paint(Graphics g) {
         g.setColor(Color.black);
-        g.fillRect(0,0,800,800);
-        //g.drawRect(0,0,800,800);
-        //drawBackground(g);
-        setSize(this.viewWidth, this.viewHeight);
-        //this.TT = CT.Multiply(AT.Multiply(VM1));
+        g.fillRect(0,0,viewWidth,viewHeight);
+        //setSize(this.viewWidth, this.viewHeight);
         this.TT = VM2.Multiply(Proj.Multiply(CT.Multiply(AT.Multiply(VM1))));
         this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
-
-        /*if(firstPaint) {
-            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM2.Multiply(this.VM1)));
-            firstPaint = false;
-        } else {
-            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
-        }*/
     }
 
     private void drawBackground(Graphics g) {
@@ -122,16 +112,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         g.drawString("R - Resets To Original Position.", 20, 40);
         g.drawString("Q - Quit.", 20, 60);
     }
-
-    /*
-    public void createVM2D(){
-        Matrix t1 = transformation.translate(-this.view.getOrigin().getVec()[0], -this.view.getOrigin().getVec()[1]);
-        Matrix rotate = transformation.rotate(-this.view.getDirection());
-        Matrix scale = transformation.scale(this.viewWidth/view.getSize()[0], -this.viewHeight/view.getSize()[1]);
-        Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
-                (double) this.viewHeight / 2 + 20);
-        this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
-    }*/
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
         Graphics g = getGraphics();
@@ -194,7 +174,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             } else {
                 this.transType = "Translate";
             }
-
         }
 
     }
@@ -273,7 +252,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         if (e.getKeyChar() == 'c' || e.getKeyChar() == 'C') {
             clipingFlag = !clipingFlag;
         } else if (e.getKeyChar() == 'r' || e.getKeyChar() == 'R') {
-            firstPaint = true;
             InitializeMatrices();
         } else if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
             System.exit(0);
@@ -287,7 +265,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             this.scene = new Scene();
             this.view = new View();
             this.listener.onChangeHappened(view);
-            firstPaint = true;
             InitializeMatrices();
         }
         this.repaint();
