@@ -26,7 +26,7 @@ public class View {
         this.viewPort = new int[2];
         this.window = new double[4];
         this.transformation = new Transformation3D();
-        this.getValuesFromFile("Resources\\ex0.vim");
+        this.getValuesFromFile("Resources\\ex1.1.vim");
         createVM1();
         createVM2();
     }

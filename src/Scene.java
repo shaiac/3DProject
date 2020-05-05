@@ -18,7 +18,7 @@ public class Scene {
     public Scene() {
         this.edgesList = new ArrayList<>();
         this.vertexList = new ArrayList<>();
-        initializeLists("Resources\\ex0.scn");
+        initializeLists("Resources\\ex1.2.scn");
     }
     public void initializeLists(String filePath) {
         List<Vector> pointsIndex = new ArrayList<>();
