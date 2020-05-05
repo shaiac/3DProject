@@ -68,7 +68,7 @@ public class View {
         double viewWidth = (double) this.viewPort[0];
         double viewHeight = (double) this.viewPort[1];
         Matrix scale = transformation.scale(viewWidth/this.windowWidth, viewHeight/this.windowHieght,0);
-        Matrix t2 = transformation.translate(viewWidth / 2 + 20, viewHeight / 2 + 20, 0);
+        Matrix t2 = transformation.translate(viewWidth / 2, viewHeight / 2, 0);
         this.VM2 = t2.Multiply(scale);
     }
 

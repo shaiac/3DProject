@@ -65,12 +65,15 @@ public class Clipping {
         List<Double> pE = new ArrayList<>();
         List<Double> pL = new ArrayList<>();
         for(i = 0; i < edgesNum; i++) {
-            p = numer[i] / denom[i];
-            if (denom[i] > 0) {
-                pE.add(p);
-            } else {
-                pL.add(p);
+            if(denom[i] != 0){
+                p = numer[i] / denom[i];
+                if (denom[i] > 0) {
+                    pE.add(p);
+                } else {
+                    pL.add(p);
+                }
             }
+
         }
         double minPL = findMin(pL);
         double maxPE = findMax(pE);

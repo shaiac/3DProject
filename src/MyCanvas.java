@@ -25,6 +25,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Matrix AT;
     private Matrix CT;
     private Matrix TT;
+    private Matrix Proj;
     private boolean firstPaint;
     public MyCanvas(int width, int height, View view) {
         this.scene = new Scene();
@@ -49,6 +50,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.TT = new Matrix(4);
         TT.toIdentityMatrix();
+        this.Proj = new Matrix(4);
+        Proj.toIdentityMatrix();
         this.VM1 = view.getVM1();
         this.VM2 = view.getVM2();
     }
@@ -93,13 +96,15 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         //drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
         //this.TT = CT.Multiply(AT.Multiply(VM1));
-        this.TT = VM2.Multiply(CT.Multiply(AT.Multiply(VM1)));
-        if(firstPaint) {
-            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM1));
+        this.TT = VM2.Multiply(Proj.Multiply(CT.Multiply(AT.Multiply(VM1))));
+        this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
+
+        /*if(firstPaint) {
+            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM2.Multiply(this.VM1)));
             firstPaint = false;
         } else {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
-        }
+        }*/
     }
 
     private void drawBackground(Graphics g) {
