@@ -191,7 +191,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     }
 
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
         AT = CT.Multiply(AT);
         CT.toIdentityMatrix();
         this.repaint();

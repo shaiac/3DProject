@@ -4,9 +4,8 @@ Ziv Zaarur 206099913
 Shai Acoca 315314278
  */
 import LinearMath.Vector;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +17,16 @@ public class Scene {
     public Scene() {
         this.edgesList = new ArrayList<>();
         this.vertexList = new ArrayList<>();
-        initializeLists("Resources\\ex1.scn");
+        initializeLists("ex1.scn");
     }
     public void initializeLists(String filePath) {
         List<Vector> pointsIndex = new ArrayList<>();
         int lineNumber = 0, edgesNum, vertexNum = 0, i;
-        File file = new File(filePath);
+        //File file = new File(filePath);
+        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(filePath);
+        InputStreamReader isr= new InputStreamReader(is);
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
                 if (lineNumber == 0) {

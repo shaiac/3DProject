@@ -6,9 +6,8 @@ Shai Acoca 315314278
 import LinearMath.Matrix;
 import LinearMath.Transformation3D;
 import LinearMath.Vector;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+
+import java.io.*;
 
 public class View {
     private Vector position;
@@ -26,7 +25,8 @@ public class View {
         this.viewPort = new int[2];
         this.window = new double[4];
         this.transformation = new Transformation3D();
-        this.getValuesFromFile("Resources\\ex1.1.vim");
+        System.out.println();
+        this.getValuesFromFile("ex1.1.vim");
         createVM1();
         createVM2(this.viewPort[0], this.viewPort[1]);
     }
@@ -41,9 +41,11 @@ public class View {
     }
 
     private void getValuesFromFile(String filePath) {
-        File file = new File(filePath);
+        //File file = new File(filePath);
+        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(filePath);
+        InputStreamReader isr= new InputStreamReader(is);
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
                 String[] str = line.split(" ");
