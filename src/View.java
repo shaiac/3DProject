@@ -28,7 +28,7 @@ public class View {
         this.transformation = new Transformation3D();
         this.getValuesFromFile("Resources\\ex1.1.vim");
         createVM1();
-        createVM2();
+        createVM2(this.viewPort[0], this.viewPort[1]);
     }
 
     private Vector createPoint(String[] str) {
@@ -67,11 +67,11 @@ public class View {
         }
     }
 
-    private void createVM2() {
+    public void createVM2(int vw, int vh) {
         this.windowHieght = window[3] - window[2];
         this.windowWidth = window[1] - window[0];
-        double viewWidth = (double) this.viewPort[0];
-        double viewHeight = (double) this.viewPort[1];
+        double viewWidth = (double) vw;
+        double viewHeight = (double) vh;
         Matrix scale = transformation.scale(viewWidth/this.windowWidth, viewHeight/this.windowHieght,0);
         Matrix t2 = transformation.translate(viewWidth / 2, viewHeight / 2, 0);
         this.VM2 = t2.Multiply(scale);

@@ -96,6 +96,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         viewHeight = dim.height;
         viewWidth = dim.width;
         createClipping();
+        view.createVM2(viewWidth, viewHeight);
+        this.VM2 = view.getVM2();
     }
     public void paint(Graphics g) {
         g.setColor(Color.black);
